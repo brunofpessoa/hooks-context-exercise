@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import Mycontext from '../context/myContext';
 
 export default function Filters() {
+  const [filtroRefeicao, setRefeicao] = useState('');
+  const [dataFiltro, setDataFiltro] = useState('');
+
+  const {
+    setFiltro, arrayCalorias,
+  } = useContext(Mycontext);
+
+  const filters = () => {
+    const filtro = arrayCalorias.filter(({ refeicao, data }) => refeicao === filtroRefeicao
+    && data === dataFiltro);
+    return setFiltro(filtro);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setFiltro();
+  };
+
   return (
     <form className="flex">
 
@@ -9,7 +28,9 @@ export default function Filters() {
         <select
           id="meal"
           defaultValue=""
-          onChange={() => {}} // sua lógica...
+          onChange={({ target }) => {
+            setRefeicao(target.value);
+          }} // sua lógica...
         >
           <option value="">Todas as refeições</option>
           <option value="Café da manhã">Café da manhã</option>
@@ -26,13 +47,15 @@ export default function Filters() {
         <input
           id="date"
           type="date"
-          onChange={() => {}} // sua lógica...
+          onChange={({ target }) => {
+            setDataFiltro(target.value);
+          }} // sua lógica...
         />
       </label>
 
       <button
         type="button"
-        onClick={() => {}} // sua lógica...
+        onClick={() => { handleSubmit(); }} // sua lógica...
       >
         Limpar Filtros
       </button>

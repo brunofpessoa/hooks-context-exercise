@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import Mycontext from '../context/myContext';
 
 export default function Form() {
+  const [calorias, setCalorias] = useState('');
+  const [data, setData] = useState('');
+  const [refeicao, setRefeicao] = useState('');
+  const {
+    setArray, arrayCalorias,
+  } = useContext(Mycontext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // ...sua lógica
+    setArray([...arrayCalorias, { calorias, data, refeicao }]);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex">
+    <form className="flex">
       <label className="flex flex-column" htmlFor="meal">
         <span>
           Refeição
@@ -16,7 +24,9 @@ export default function Form() {
         <select
           id="meal"
           defaultValue="Café da manhã"
-          onChange={() => {}} // sua lógica...
+          onChange={({ target }) => {
+            setRefeicao(target.value);
+          }} // sua lógica...
         >
           <option value="Café da manhã">Café da manhã</option>
           <option value="Lanche da manhã">Lanche da manhã</option>
@@ -36,7 +46,9 @@ export default function Form() {
           id="calories"
           type="number"
           placeholder="ex: 400"
-          onChange={() => {}} // sua lógica...
+          onChange={({ target }) => {
+            setCalorias(target.value);
+          }} // sua lógica...
         />
       </label>
 
@@ -48,11 +60,18 @@ export default function Form() {
         <input
           id="date"
           type="date"
-          onChange={() => {}} // sua lógica...
+          onChange={({ target }) => {
+            setData(target.value);
+          }} // sua lógica...
         />
       </label>
 
-      <button type="submit">Adicionar</button>
+      <button
+        type="submit"
+        onClick={handleSubmit}
+      >
+        Adicionar
+      </button>
     </form>
   );
 }
